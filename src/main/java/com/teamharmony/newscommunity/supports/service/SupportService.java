@@ -86,13 +86,12 @@ public class SupportService {
 
     //수정
     @Transactional
-    public String update(Long support_id, SupportRequestUpdateDto requestUpdateDto, UserDetails user) {
+    public String update(Long support_id, SupportRequestUpdateDto requestUpdateDto, String username) {
         Support supportObject = supportRepository.findById(support_id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
 
         Long supportsUserID = supportObject.getUser().getId(); //현재 게시글에서 userID정보획득
-        String username = user.getUsername(); //현재 로그인한 사람 이름가져오기
         User currentUser = userRepository.findByUsername(username); // 현재 로그인한 사람 이름(unigue)으로 user정보 획득
         Long loginUserId = currentUser.getId();// 로그인한 사용자ID 정보(Long) 획득
 
