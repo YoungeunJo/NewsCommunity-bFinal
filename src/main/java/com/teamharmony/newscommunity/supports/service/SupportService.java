@@ -21,8 +21,8 @@ public class SupportService {
     private final UserRepository userRepository;
     //생성
     @Transactional
-    public Support generateSupport(SupportRequestDto requestedDto, String username){
-        Support support = new Support(requestedDto, username);
+    public Support generateSupport(SupportRequestDto requestDto, String username){
+        Support support = new Support(requestDto, username);
         User user = userRepository.findByUsername(username);
         user.addSupports(support);
         supportRepository.save(support);
@@ -48,8 +48,8 @@ public class SupportService {
     }
 
     // 내가 작성한 것만 찾기
-    public List<SupportResponseDto> getSupportsListWrittenByMe(String username) {
-        List<Support> supportList = supportRepository.findAllByUsername(username);
+    public List<SupportResponseDto> getMySupportList(String username) {
+        List<Support> supportList = supportRepository.findAllByUsernameOrderByCreatedAtDesc(username);
         List<SupportResponseDto> resultList = new LinkedList<>();
         for (Support supportItems : supportList) {
             SupportResponseDto supportResponseDto = SupportResponseDto.builder()
